@@ -3,8 +3,11 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"net/url"
 	"os"
@@ -26,7 +29,29 @@ type login_msg struct {
 	Password string `json:"password"`
 }
 
+type accounts struct {
+}
+
 var addr = flag.String("addr", "www.yutiansut.com:7988", "http service address")
+
+func save_user(account_cookie string, userinfo string, db *mongo.Database) {
+	coll := db.Collection("acccount")
+
+	result, err := coll.UpdateOne(
+		context.Background(),
+		bson.D{
+			{"account_cookie", account_cookie},
+		},
+		bson.D{
+			{"$set", bson.D{
+				{"size.uom", "cm"},
+				{"status", "P"},
+			}},
+		},
+	)
+	log.Println(result)
+	log.Println(err)
+}
 
 func main() {
 	flag.Parse()

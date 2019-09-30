@@ -15,11 +15,6 @@ func main() {
 
 	collection := client.Database("QAREALTIME").Collection("account")
 
-	//
-	//ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
-	//res, err := collection.InsertOne(ctx, bson.M{"name": "pi", "value": 3.14159})
-	//id := res.InsertedID
-
 	ctx, _ = context.WithTimeout(context.Background(), 30*time.Second)
 	cur, err := collection.Find(
 		ctx,
